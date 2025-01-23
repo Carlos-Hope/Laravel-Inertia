@@ -11,7 +11,7 @@ function Index({ auth, projects, queryParams = null }) {
   queryParams = queryParams || {}
   const searchFieldChanged = (name, value) => {
     if (value) {
-      queryParams[name] = value
+      queryParams[name] = value;
     } else {
       delete queryParams[name]
     }
@@ -24,8 +24,10 @@ function Index({ auth, projects, queryParams = null }) {
 
   const sortChanged = (name) => {
     if (name === queryParams.sort_field) {
-      if (queryParams.sort_direction = 'asc') {
-        queryParams.sort_direction = 'desc'
+      if (queryParams.sort_direction === 'asc') {
+        queryParams.sort_direction = 'desc';
+      }else{
+        queryParams.sort_direction = 'asc';
       }
     } else {
       queryParams.sort_field = name;
@@ -55,7 +57,7 @@ function Index({ auth, projects, queryParams = null }) {
                       name='id'
                       sort_field={queryParams.sort_field}
                       sort_direction={queryParams.sort_direction}
-                      shortChanged={sortChanged}
+                      sortChanged={sortChanged}
                     >
                       ID
                     </TableHeading>
@@ -64,25 +66,33 @@ function Index({ auth, projects, queryParams = null }) {
                       name='name'
                       sort_field={queryParams.sort_field}
                       sort_direction={queryParams.sort_direction}
-                      shortChanged={sortChanged}
+                      sortChanged={sortChanged}
                     >
                       Name
                     </TableHeading>
                     <th onClick={e => sortChanged('status')} className='px-3 py-3'>
-                      <div className='flex items-center justify-between gap-1'>Status
+                      <div className='flex items-center justify-between gap-1 cursor-pointer'>Status
                         <div>
-                          <ChevronUpIcon className='w-4' />
-                          <ChevronDownIcon className='w-4 -mt-2' />
+                          <ChevronUpIcon className={'w-4 -mt-2 ' + (queryParams.sort_field === 'status' && queryParams.sort_direction === 'asc' ? 'text-red-700' : '')} />
+                          <ChevronDownIcon className={'w-4 -mt-2 ' + (queryParams.sort_field === 'status' && queryParams.sort_direction === 'desc' ? 'text-red-700' : '')} />
                         </div>
-                      </div></th>
-                    <th onClick={e => sortChanged('created_at')} className='px-3 py-3'><div className='flex items-center justify-between gap-1'>Create<div>
-                      <ChevronUpIcon className='w-4' />
-                      <ChevronDownIcon className='w-4 -mt-2' />
-                    </div></div></th>
-                    <th onClick={e => sortChanged('due_date')} className='px-3 py-3'><div className='flex items-center justify-between gap-1'>Due Date <div>
-                      <ChevronUpIcon className='w-4' />
-                      <ChevronDownIcon className='w-4 -mt-2' />
-                    </div></div></th>
+                      </div>
+                      </th>
+                    <th onClick={e => sortChanged('created_at')} className='px-3 py-3'>
+                      <div className='flex items-center justify-between gap-1 cursor-pointer'>Create
+                      <div>
+                      <ChevronUpIcon className={'w-4 ' + (queryParams.sort_field === 'created_at' && queryParams.sort_direction === 'asc' ? 'text-red-700' : '')} />
+                      <ChevronDownIcon className={'w-4 -mt-2 ' + (queryParams.sort_field === 'created_at' && queryParams.sort_direction === 'desc' ? 'text-red-700' : '')}  />
+                    </div></div>
+                    </th>
+                    <TableHeading
+                      name='due_date'
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      Due Date
+                    </TableHeading>
                     <th className='px-3 py-3'>Created By</th>
                     <th className='px-3 py-3 text-right'>Action</th>
                   </tr>
