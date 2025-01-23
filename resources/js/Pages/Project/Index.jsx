@@ -1,5 +1,6 @@
+import Pagination from '@/Components/Pagination'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 
 function Index({auth, projects}) {
   return (
@@ -20,14 +21,14 @@ function Index({auth, projects}) {
                            <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
                             <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-70 dark:text-gray-400 border-b-2 border-gray-500'>
                               <tr className='text-nowrap'>
-                                <th className='px-3 py-2'>Id</th>
-                                <th className='px-3 py-2'>Image</th>
-                                <th className='px-3 py-2'>Name</th>
-                                <th className='px-3 py-2'>Status</th>
-                                <th className='px-3 py-2'>Create Date</th>
-                                <th className='px-3 py-2'>Due Date</th>
-                                <th className='px-3 py-2'>Created By</th>
-                                <th className='px-3 py-2'>Action</th>
+                                <th className='px-3 py-3'>Id</th>
+                                <th className='px-3 py-3'>Image</th>
+                                <th className='px-3 py-3'>Name</th>
+                                <th className='px-3 py-3'>Status</th>
+                                <th className='px-3 py-3'>Create Date</th>
+                                <th className='px-3 py-3'>Due Date</th>
+                                <th className='px-3 py-3'>Created By</th>
+                                <th className='px-3 py-3 text-right'>Action</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -35,19 +36,26 @@ function Index({auth, projects}) {
                                 <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
                                 <td className='px-2 py-2'>{project.id}</td>
                                 <td className='px-2 py-2'>
-                                  <img src={project.image_path} alt="" style={{ width:60 }}/>
+                                  <img src={project.image_path} alt="image" style={{ width:60 }}/>
                                 </td>
                                 <td className='px-2 py-2'>{project.name}</td>
                                 <td className='px-2 py-2'>{project.status}</td>
                                 <td className='px-2 py-2'>{project.created_at}</td>
                                 <td className='px-2 py-2'>{project.due_date}</td>
                                 <td className='px-2 py-2'>{project.createdBy.name}</td>
-                                <td className='px-2 py-2'></td>
+                                <td className='px-2 py-2'>
+                                  <Link href={route('project.edit', project.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">
+                                  Edit
+                                  </Link>
+                                  <Link href={route('project.destroy', project.id)} className='font-medium text-red-6OO dark:text-red-500 hover:underline mx-1'>
+                                    Delete
+                                  </Link>
+                                </td>
                               </tr>
                               ))}
-
                             </tbody>
                            </table>
+                           <Pagination links={projects.meta.links}/>
                         </div>
                     </div>
                 </div>
