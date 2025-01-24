@@ -136,9 +136,10 @@ function Index({ auth, tasks, queryParams = null }) {
                         <img src={task.image_path} alt="image" style={{ width: 60 }} />
                       </td>
                       <td className='px-2 py-2'>{task.name}</td>
-                      <span className={"px-2 py-1 rounded text-white " + TASK_STATUS_CLASS_MAP[task.status]}>
-                        <td className='px-2 py-2'>{TASK_STATUS_TEXT_MAP[task.status]}</td>
-                      </span>
+                      <td className='px-2 py-2'>
+                          <span className={"px-2 py-1 rounded text-white " + TASK_STATUS_CLASS_MAP[task.status]}>{TASK_STATUS_TEXT_MAP[task.status]}
+                          </span>
+                        </td>
                       <td className='px-2 py-2'>{task.created_at}</td>
                       <td className='px-2 py-2'>{task.due_date}</td>
                       <td className='px-2 py-2'>{task.createdBy.name}</td>
