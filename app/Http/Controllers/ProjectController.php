@@ -6,6 +6,8 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\TaskResource;
+use App\Models\Task;
 
 class ProjectController extends Controller
 {
@@ -19,18 +21,18 @@ class ProjectController extends Controller
         $sortField = request("sort_field", "created_at");
         $sortDirection = request("sort_direction", "desc");
 
-        if(request("name")){
-            $query->where("name","like","%".request("name")."%");
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
         }
 
-        if(request("status")){
-            $query->where("status",request("status"));
+        if (request("status")) {
+            $query->where("status", request("status"));
         }
 
         $projects = $query->OrderBy($sortField, $sortDirection)->paginate(10);
         // $projects = Project::paginate(10)->onEachSide(1);
 
-        return inertia("Project/Index",[
+        return inertia("Project/Index", [
             "projects" => ProjectResource::collection($projects),
             "queryParams" => request()->query() ?: null,
         ]);
@@ -57,12 +59,21 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        // return inertia('Project/Show',[
-        //      'project' => new ProjectResource($project),
-        // ]);
-        return inertia('Project/Show',[
-                 'project' => new ProjectResource($project),
-            ]);
+        $query = $project->tasks();
+        $sortField = request("sort_field", "created_at");
+        $sortDirection = request("sort_direction", "desc");
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
+        $tasks = $query->OrderBy($sortField, $sortDirection)->paginate(10)->onEachSide(1);
+        return inertia('Project/Show', [
+            'project' => new ProjectResource($project),
+            "tasks" => TaskResource::collection($tasks),
+            "queryParams" => request()->query() ?: null,
+        ]);
     }
 
     /**
