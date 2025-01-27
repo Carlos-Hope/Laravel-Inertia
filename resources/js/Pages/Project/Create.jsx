@@ -81,7 +81,7 @@ export default function Create({ }) {
                   type="date"
                   name="due_date"
                   className='mt-1 w-full block'
-                  value={data.due_date}
+                  value={data.date}
                   onChange={e => setData('due_date', e.target.value)} />
                 <InputError message={errors.due_date} className="mt-2" />
               </div>
