@@ -6,7 +6,7 @@ import SelectInput from '@/Components/SelectInput.jsx'
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid'
 import TableHeading from '@/Components/TableHeading.jsx'
 
-export default function TaskTable( {tasks, queryParams = null, hideProjectColumn = false}) {
+export default function TaskTable( {tasks, queryParams = null, hideProjectColumn = false , success}) {
   queryParams = queryParams || {}
   const searchFieldChanged = (name, value) => {
     if (value) {
@@ -33,6 +33,12 @@ export default function TaskTable( {tasks, queryParams = null, hideProjectColumn
       queryParams.sort_direction = 'asc'
     }
     router.get(route('task.index'), queryParams)
+  }
+  const deleteTask = (task) => {
+    if(!window.confirm("Are you sure to delete this task")){
+      return;
+    }
+    router.delete(route('task.destroy', task.id))
   }
   return (
     <>
@@ -133,13 +139,11 @@ export default function TaskTable( {tasks, queryParams = null, hideProjectColumn
                 <td className='px-2 py-2'>{task.created_at}</td>
                 <td className='px-2 py-2'>{task.due_date}</td>
                 <td className='px-2 py-2'>{task.createdBy.name}</td>
-                <td className='px-2 py-2'>
+                <td className='px-2 py-2 text-nowrap'>
                   <Link href={route('task.edit', task.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1">
                     Edit
                   </Link>
-                  <Link href={route('task.destroy', task.id)} className='font-medium text-red-6OO dark:text-red-500 hover:underline mx-1'>
-                    Delete
-                  </Link>
+                  <button onClick={(e)=> deleteTask(task)} className='font-medium text-red-6OO dark:text-red-500 hover:underline mx-1'> Delete</button>
                 </td>
               </tr>
             ))}
